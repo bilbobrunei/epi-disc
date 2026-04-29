@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-poppins: 'Poppins', sans-serif;
+  --font-open-sans: 'Open Sans', sans-serif;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  font-family: var(--font-open-sans);
+  background: #FAFAFA;
+  color: #1C1C1C;
+}
+
+h1, h2, h3, h4, h5, h6, .font-heading {
+  font-family: var(--font-poppins);
+}
+
+/* Smooth scrolling */
+html { scroll-behavior: smooth; }
+
+/* Custom scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #EBEBEB; border-radius: 3px; }
+
+/* Bar fill transition */
+.bar-fill {
+  transition: width 0.75s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* Card slide-up for new participants */
+.card-new {
+  animation: slide-up 0.65s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Presenter dark screen override */
+.presenter-screen {
+  background: #0d1117;
+  font-family: var(--font-poppins);
+}
