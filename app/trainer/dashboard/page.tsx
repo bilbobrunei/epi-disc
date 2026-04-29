@@ -85,6 +85,9 @@ export default function TrainerDashboard() {
           <button onClick={() => setShowCreate(true)} className="px-4 py-2 bg-disc-d text-disc-D-text font-heading font-bold text-sm rounded-xl hover:brightness-105 active:scale-95 transition-all">
             + New session
           </button>
+          <button onClick={() => router.push('/trainer/adjectives')} className="px-4 py-2 border border-brand-dark-border text-gray-400 font-heading font-bold text-sm rounded-xl hover:border-gray-500 hover:text-white active:scale-95 transition-all">
+            ✏️ Adjectives
+          </button>
           <button onClick={signOut} className="text-gray-500 text-sm hover:text-gray-300 transition-colors">Sign out</button>
         </div>
       </div>

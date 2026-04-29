@@ -12,7 +12,7 @@ export default function QuizPage() {
 
   const [participantId, setParticipantId] = useState<string | null>(null)
   const [sessionId, setSessionId] = useState<string | null>(null)
-  const [adjectives, setAdjectives] = useState<{ word: string; trait: Trait }[]>([])
+  const [adjectives, setAdjectives] = useState<{ word: string; label: string; trait: Trait }[]>([])
   const [selected, setSelected] = useState<Set<string>>(new Set())
   const [submitting, setSubmitting] = useState(false)
   const [alreadySubmitted, setAlreadySubmitted] = useState(false)
@@ -57,7 +57,21 @@ export default function QuizPage() {
       if (existing) setSelected(new Set(existing.map(r => r.adjective)))
     }
 
-    setAdjectives(shuffle(ALL_ADJECTIVES))
+    // Fetch custom labels and merge with defaults
+    const { data: overridesData } = await supabase
+      .from('adjective_overrides')
+      .select('original, custom_label')
+    const overrideMap: Record<string, string> = {}
+    if (overridesData) {
+      overridesData.forEach((r: { original: string; custom_label: string }) => {
+        overrideMap[r.original] = r.custom_label
+      })
+    }
+    const withLabels = ALL_ADJECTIVES.map(a => ({
+      ...a,
+      label: overrideMap[a.word] ?? a.word,
+    }))
+    setAdjectives(shuffle(withLabels))
   }, [code, router])
 
   useEffect(() => { loadSession() }, [loadSession])
@@ -166,7 +180,7 @@ export default function QuizPage() {
 
         {/* Adjective grid */}
         <div className="grid grid-cols-2 sm:grid-cols-3 gap-2.5">
-          {adjectives.map(({ word, trait }) => {
+          {adjectives.map(({ word, label, trait }) => {
             const isSelected = selected.has(word)
             const color = DISC_COLORS[trait]
             return (
@@ -184,7 +198,7 @@ export default function QuizPage() {
                     : 'border-brand-border bg-white text-brand-text hover:border-gray-300 hover:bg-gray-50'
                   }`}
               >
-                {word}
+                {label}
               </button>
             )
           })}
